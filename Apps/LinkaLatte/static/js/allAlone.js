@@ -9,7 +9,7 @@ function displayLinksArray(data)
         //called when successful
         if (!data || data.length === 0) {
             $("#infoMsg").attr("class", "info");
-            $("#infoMsg").text("No results found");
+            $("#infoMsg").html("<p>No Results Found</p>");
             $("#infoMsg").show();
             return;
         }
@@ -141,7 +141,7 @@ function findLinksCollection() {
 }
 
 function showError(errorMessage) {
-    $("#infoMsg").text(errorMessage);
+    $("#infoMsg").html("<p>" + errorMessage + "</p>");
     $("#infoMsg").attr("class", "error");
     $("#infoMsg").show();
     $("#results").hide();
