@@ -6,68 +6,40 @@ var resultsTemplate = null;
 
 function displayLinksArray(data)
 {
-        //called when successful
-        if (!data || data.length === 0) {
-            $("#infoMsg").attr("class", "info");
-            $("#infoMsg").html("<p>No Results Found</p>");
-            $("#infoMsg").show();
-            return;
-        }
-        // First we sort it by the at field then we're going to group it by date
-        var dateGroups = []; // Array of objectcs matching {date:..., links:[...]}
-        var curDate = null;
-        var curLinks;
-        for (var i = 0; i < data.length; ++i) {
-            // We unset all the non compared fields
-            var nextDate = new Date;
-            nextDate.setTime(parseInt(data[i].at));
-            nextDate.setHours(0);
-            nextDate.setMinutes(0);
-            nextDate.setSeconds(0);
-            nextDate.setMilliseconds(0);
+  // called when successful
+  if (!data || data.length === 0) {
+    $("#infoMsg").attr("class", "info");
+    $("#infoMsg").html("<p>No Results Found</p>");
+    $("#infoMsg").show();
+    return;
+  }
+  // First we sort it by the at field then we're going to group it by date
+  var dateGroups = []; // Array of objectcs matching {date:..., links:[...]}
+  var curDate = null;
+  var curLinks;
+  for (var i = 0; i < data.length; ++i)
+  {
+    // We unset all the non compared fields
+    var nextDate = new Date;
+    nextDate.setTime(parseInt(data[i].at));
+    nextDate.setHours(0);
+    nextDate.setMinutes(0);
+    nextDate.setSeconds(0);
+    nextDate.setMilliseconds(0);
 
-            // If it's a different date let's start a new group of links
-            if (!curDate || nextDate.getTime() != curDate.getTime()) {
-                var newDateGroup = {date:nextDate.strftime("%A, %B %d, %Y"), links:[]};
-                dateGroups.push(newDateGroup);
-                curLinks = newDateGroup.links;
-                curDate = nextDate;
-            }
+    // If it's a different date let's start a new group of links
+    if (!curDate || nextDate.getTime() != curDate.getTime())
+    {
+      var newDateGroup = {date:nextDate.strftime("%A, %B %d, %Y"), links:[]};
+      dateGroups.push(newDateGroup);
+      curLinks = newDateGroup.links;
+      curDate = nextDate;
+    }
 
-            curLinks.push(data[i]);
-        }
-        $("#results").render({groups:dateGroups,groupClass:"dateGroup"}, resultsTemplate);
-        $("#results").show();
-        $(".viewMore").click(function() {
-            if ($(this).text().indexOf("Hide") > 0) {
-                $(this).parents(".linkInfo").find(".embedView").hide(250);
-                $(this).html("&#9654; View");
-            } else {
-                var elem = $(this).parents(".linkInfo").find(".embedView");
-                var E = $(this);
-                $.ajax({
-                  url: "/Me/" + collectionHandle + "/embed?url=" + $(this).parents(".linkInfo").find("a").attr("href"),
-                  type: "GET",
-                  dataType: "json",
-                  success: function(data) {
-                      if (data.html) {
-                          elem.html(data.html);
-                      } else if (data.thumbnail_url) {
-                          elem.html("<img src='" + data.thumbnail_url + "' /><div>" + data.description||"" + "</div>");
-                      } else {
-                          elem.html("No preview.");
-                      }
-                      elem.show(250);
-                      E.html("&#x25bc; Hide");
-                  },
-                  error: function() {
-
-                  }
-                });
-                E.html("<img src='img/ajax-loader.gif' /> Loading...");
-                //$(this).html("&#9654; View");
-            }
-        });
+    curLinks.push(data[i]);
+  }
+  $("#results").render({groups:dateGroups,groupClass:"dateGroup"}, resultsTemplate);
+  $("#results").show();
 }
 
 function queryLinksCollection (queryString) {
@@ -158,7 +130,8 @@ Array.prototype.clean = function(deleteValue) {
   return this;
 };
 
-$(function(){
+$(function()
+{
     resultsTemplate = $p("#results").compile({
         "div.templateDateGroup" : {
             // Loop on each date group
@@ -174,11 +147,6 @@ $(function(){
                                 "twitter":"img/twitter.png"
                             };
                             return (arg.item.encounters.length > 0) ? images[arg.item.encounters[arg.item.encounters.length - 1].network] : "img/1x1-pixel.png";
-                        },
-                        "div.fullInfo@class+":function(arg) {
-                            var theClass = arg.pos % 2 === 0 ? " even" : " odd";
-                            if (!arg.item.title && arg.item.link.length < 200) theClass += " shiftDownDesc";
-                            return theClass;
                         },
                         "img.favicon@src":"link.favicon",
                         "a.expandedLink":function(arg) {
@@ -211,6 +179,15 @@ $(function(){
                         },
                         "span.linkFrom@style":function(arg) {
                             return arg.item.encounters[arg.item.encounters.length - 1].from ? "" : "display:none";
+                        },
+                        "div.embedView":function(arg) {
+                          var item = arg.item;
+                          if (typeof item.embed === "undefined") return;
+                          if (item.embed.html) {
+                            return item.embed.html;
+                          } else if (item.embed.thumbnail_url) {
+                            return "<img src='" + item.embed.thumbnail_url + "' /><p>" + item.embed.description||"" + "</p>";
+                          }
                         }
                     }
                 }
@@ -237,6 +214,10 @@ $(function(){
 
 function hideMe() {
     $(event.srcElement).hide();
+}
+
+function showMe() {
+    $(event.srcElement).show();
 }
 
 function getSincePrettified(timestamp) {

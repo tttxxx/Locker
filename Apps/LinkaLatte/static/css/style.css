@@ -194,51 +194,47 @@ body > header:after
   padding-bottom: 7px;
 }
 
-.linkLine
-{
-  display: none;
-  font-size: 80%;
-}
-
-.providerIcon
-{
-  float: left;
-  height: 16px;
-  width: 16px;
-  margin-right: 6px;
-  vertical-align: middle;
-}
-
 .fullInfo
 {
   min-height: 32px;
   padding: 8px;
 }
 
-.favicon
+a.expandedLink
 {
-  float: left;
-  height: 16px;
-  width: 16px;
-  margin-top: 4px;
-  display: none;
-}
-
-a.expandedLink {
-    color:#7f7f7f;
-    margin-left: 4px;
-    font-size:85%;
+  color: #7f7f7f;
+  margin-left: 4px;
+  font-size: 85%;
 }
 
 .linkTitle
 {
+  height: 32px;
+  line-height: 32px;
   margin-bottom: 6px;
+}
+
+.linkTitle img.favicon
+{
+  display: none;
+  float: left;
+  height: 16px;
+  width: 16px;
+  margin-top: 8px;
+  margin-right: 8px;
 }
 
 .linkTitle a
 {
   text-decoration: none;
   color: rgba(0, 0, 0, 0.75);
+}
+
+.linkLine
+{
+  display: none;
+  /*font-size: 80%; */
+  clear: both;
 }
 
 .linkDescription
@@ -251,6 +247,14 @@ a.expandedLink {
   font-size: 80%;
 }
 
+.providerIcon
+{
+  float: left;
+  height: 16px;
+  width: 16px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
 
 .linkFrom
 {
@@ -265,10 +269,11 @@ a.expandedLink {
   color: #666;
 }
 
-.linkFrom a {
-    text-decoration:none;
-    color:#666;
-    font-weight: bold;
+.linkFrom a
+{
+  text-decoration: none;
+  color: #666;
+  font-weight: bold;
 }
 
 .linkFrom a:hover
@@ -276,29 +281,38 @@ a.expandedLink {
   text-decoration: underline;
 }
 
-.shiftDownDesc {
-    /*line-height:32px;*/
-}
-/* Embed */
-.embedView {
-    display:none;
-    margin:10px;
-    font-size:80%;
-}
-.viewMore {
-    font-size:75%;
-    display: none;
+.embedView
+{
+  /* display: none; */
+  margin: 10px;
+  font-size: 80%;
 }
 
-#newCountHeader {
-    display:none;
+.embedView img
+{
+  height: 128px;
 }
 
-#newLinkCount {
-    font-size:24px;
-    font-weight:bold;
+/*
+.viewMore
+{
+  font-size: 75%;
+  display: none;
+}
+*/
+
+#newCountHeader
+{
+  display: none;
 }
 
-.smallLink {
-    font-size:10px;
+#newLinkCount
+{
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.smallLink
+{
+  font-size: 10px;
 }
