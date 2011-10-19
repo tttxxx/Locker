@@ -27,8 +27,16 @@ $(document).ready(
 
         $('.app-link').click(function() {
             app = $(this).attr('id');
+            if ($("#services:visible").length > 0) closeServices(0);
             window.location.hash = app;
             renderApp();
+            return false;
+        });
+
+        // service buttons
+        $('#service-selector').delegate('.provider-link', 'click', function() {
+            if ($(this).hasClass('disabled')) return false;
+            accountPopup($(this));
             return false;
         });
 
@@ -130,23 +138,10 @@ $(document).ready(
 
         var viewersFullDisplay = false;
         $("#viewers-hide-show").click(function() {
-            if(!viewersFullDisplay) {
-                $("#viewers-hover").hide();
-                $("#viewers-title").show();
-                $("#viewers-list").show();
-                $("#viewers").animate({"left":"0px"}, 300, function() {
-                    $("#viewers-slide-button").attr('src', 'img/slide-in.png');
-                    viewersFullDisplay = true;
-                });
+            if ($('#viewers-title').is(':visible')) {
+                hideViewers();
             } else {
-                $("#viewers").animate({"left":"-320px"}, 300, function() {
-                    viewersFullDisplay = false;
-                    $("#viewers-title").hide();
-                    $("#viewers-list").hide();
-                    $("#viewers-hover").show();
-                    $("#appFrame")[0].contentWindow.focus();
-                    $("#viewers-slide-button").attr('src', 'img/slide-out.png');
-                });
+                openViewers();
             }
         });
 
@@ -413,24 +408,47 @@ function drawService(synclet) {
     $('#service-selector').append(newService);
 };
 
+function hideViewers() {
+    $("#viewers").animate({"left":"-320px"}, 300, function() {
+        $("#viewers-title").hide();
+        $("#viewers-list").hide();
+        $("#appFrame")[0].contentWindow.focus();
+        $("#viewers-slide-button").attr('src', 'img/slide-out.png');
+    });
+};
+
+function openViewers() {
+    $("#viewers-title").show();
+    $("#viewers-list").show();
+    $("#viewers").animate({"left":"0px"}, 300, function() {
+        $("#viewers-slide-button").attr('src', 'img/slide-in.png');
+    });
+}
+
 function drawViewer(viewer, isSelected) {
     var newService = $('.viewer.template').clone();
-    var newServiceHover = $('.viewer-hover.template').clone();
     var viewerUrl = externalBase + '/Me/' + viewer.handle + '/';
     newService.find('.viewer-icon').attr('src', viewerUrl + 'img/viewer-icon.png').attr('onError', 'this.src=\'img/viewer-icon.png\'');
     newService.find('.viewer-link').attr('href', '#' + viewer.viewer);
     if(!isSelected) {
         newService.find('.viewer-link').click(function() {
+            hideViewers();
             if(viewer.sync)
             {
-                console.log("forced background syncing to github");
+                log("forced background syncing to github");
                 $.get('/synclets/github/run?id=repos', function(){});
+                showGritter('syncgithub');
                 return;
             }
-            setViewer(viewer.viewer, viewer.handle, function() {
-                renderApp();
+            if (viewer.handle === 'devdocs') {
+                $("#appFrame")[0].contentWindow.location.replace("/Me/devdocs/"); // HACK WTF OMG IrAGEuBroSER!
                 drawViewers();
-            });
+            } else {
+                setViewer(viewer.viewer, viewer.handle, function() {
+                    renderApp();
+                    drawViewers();
+                });
+            }
         });
     } else {
         newService.addClass('selected');
@@ -442,28 +460,13 @@ function drawViewer(viewer, isSelected) {
     $('#viewers-list').append(newService);
 
     if(viewer.author == "") return;
-    newServiceHover.find('.viewer-icon').attr('src', viewerUrl + 'img/viewer-icon.png').attr('onError', 'this.src=\'img/viewer-icon.png\'');
-    newServiceHover.find('.viewer-link').attr('href', '#' + viewer.viewer);
-    if(!isSelected) {
-        newServiceHover.find('.viewer-link').click(function() {
-            setViewer(viewer.viewer, viewer.handle, function() {
-                renderApp();
-                drawViewers();
-            });
-        });
-    } else {
-        newServiceHover.addClass('selected');
-    }
-    newServiceHover.removeClass('template');
-    $('#viewers-hover').append(newServiceHover);
 }
 
 function drawViewers() {
-    console.log('drawViewers');
+    log('drawViewers');
     $.getJSON('viewers', function(data) {
         console.error("DEBUG: data", data);
         $('.viewer:not(.template)').remove();
-        $('.viewer-hover:not(.template)').remove();
         var viewersToRender = data.available[app];
         for(var i in viewersToRender) {
             drawViewer(viewersToRender[i], data.selected[app] === viewersToRender[i].handle);
@@ -480,7 +483,7 @@ function drawViewers() {
             title: 'Sync your views from GitHub',
             author: '',
             viewer: 'photos',
-            handle: 'devdocs',
+            handle: 'useui',
             sync: true
         };
         drawViewer(addViewerView, false);
@@ -578,31 +581,32 @@ function expandServices()
     $('#services #choose-services').fadeIn();
     $('#services #service-selector').fadeIn();
   }});
+  $('#appFrame').animate({ height: $(window).height() - 96 - $('.header').height() }, { duration: 200 });
 }
 
 function resizeFrame() {
-    $('#appFrame').height($(window).height() - $('#services').height() - $('.header').height() - 6);
+    $('#appFrame').height($(window).height() - $('#services').height() - $('.header').height());
     $("#appFrame").width($(window).width());
 }
 
 
 
-function closeServices()
+function closeServices(duration)
 {
-
+  dur = duration == undefined ? 200 : duration;
   $('.services-box-container').removeClass("active");
 
   // Restore the main content area...
   $("#iframeWrapper").animate({
     top: "64px"
   }, {
-      duration: 200, queue: false
+      duration: dur, queue: false
   });
 
   // Restore the viewers slider...
-  $("#viewers").animate({ top: "86px" }, { duration: 200 });
+  $("#viewers").animate({ top: "86px" }, { duration: dur });
 
-  $('#services').animate({height: "0px"}, {duration: 200, queue: false, complete:function() {
+  $('#services').animate({height: "0px"}, {duration: dur, queue: false, complete:function() {
       // $('.services-box-container').show();
       $('#services').hide();
       resizeFrame();
