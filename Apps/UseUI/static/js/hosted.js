@@ -1,10 +1,15 @@
 userEmail = "";
 userName = "";
+userOptin = '';
+externalHost = '';
 var clicked = false;
 
 function setUserGlobals(data) {
     userEmail = data.email;
     userName = data.name;
+    userOptin = data.optin;
+    externalHost = data.externalHost;
+
     $(".userEmail").text(userEmail);
     $(".user-name").text(userName);
 
@@ -55,4 +60,8 @@ $(document).ready(function() {
     $('.header').click(function() {
         closeUserMenu();
     });
+
+    if (userOptin === "true") {
+        $(".app-page").append('<script type="text/javascript" charset="utf-8" src="js/ga.js"></script>');
+    }
 });
