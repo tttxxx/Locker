@@ -129,7 +129,6 @@ body > header:after
   bottom: 20px;
 
   overflow-y: scroll;
-  /*padding-top: 27px;*/
 
   background-color: white;
   border: 1px solid rgba(0, 0, 0, 0.2);
@@ -152,7 +151,7 @@ body > header:after
     0 1px 0 rgba(255, 255, 255, 1);
 }
 
-/* Group Styles */
+/* Date Groups ------------------------------------------------------------ */
 
 .dateInfo
 {
@@ -169,29 +168,16 @@ body > header:after
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
 }
 
-/*
-.dateGroup:first-of-type .dateInfo
-{
-  position: fixed;
-  left: 41px;
-  top: 63px;
-  right: 21px;
-  border-top: 2px solid white;
-  border-bottom: 2px solid white;
-  z-index: 1000;
-}
-*/
-
-/* Link Styles */
+/* Links ------------------------------------------------------------------ */
 
 .linkInfo
 {
   position: relative;
-  clear: both;
   margin: 2px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   padding-top: 6px;
   padding-bottom: 7px;
+  min-height: 96px;
 }
 
 .fullInfo
@@ -209,9 +195,16 @@ a.expandedLink
 
 .linkTitle
 {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 80%;
   height: 32px;
   line-height: 32px;
   margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .linkTitle img.favicon
@@ -230,6 +223,11 @@ a.expandedLink
   color: rgba(0, 0, 0, 0.75);
 }
 
+.linkTitle a:hover
+{
+  text-decoration: underline;
+}
+
 .linkLine
 {
   display: none;
@@ -244,6 +242,9 @@ a.expandedLink
 
 .linkDetails
 {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
   font-size: 80%;
 }
 
@@ -284,22 +285,27 @@ a.expandedLink
 .embedView
 {
   /* display: none; */
-  margin: 10px;
   font-size: 80%;
+  float: right;
+  margin: 20px;
+  outline: 1px solid red;
+}
+
+.embedView:after
+{
+  content: "";
+  display: block;
+  clear: both;
 }
 
 .embedView img
 {
-  height: 128px;
+  height: 160px;
 }
 
-/*
-.viewMore
+.embedView iframe
 {
-  font-size: 75%;
-  display: none;
 }
-*/
 
 #newCountHeader
 {

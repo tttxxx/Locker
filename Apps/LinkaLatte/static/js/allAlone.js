@@ -180,13 +180,19 @@ $(function()
                         "span.linkFrom@style":function(arg) {
                             return arg.item.encounters[arg.item.encounters.length - 1].from ? "" : "display:none";
                         },
+                        "p.linkSummary":function(arg) {
+                          var item = arg.item;
+                          if (typeof item.embed === "undefined") return;
+                          if (item.embed.description)
+                            return "<p>" + item.embed.description + "</p>";
+                        },
                         "div.embedView":function(arg) {
                           var item = arg.item;
                           if (typeof item.embed === "undefined") return;
                           if (item.embed.html) {
                             return item.embed.html;
                           } else if (item.embed.thumbnail_url) {
-                            return "<img src='" + item.embed.thumbnail_url + "' /><p>" + item.embed.description||"" + "</p>";
+                            return "<img src='" + item.embed.thumbnail_url + "' />";
                           }
                         }
                     }
