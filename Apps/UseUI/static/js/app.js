@@ -18,7 +18,7 @@ $(document).ready(
         // any mouse activity resets it
         $(document).mousemove( function() {
             retryTime = 1000;
-        } );
+        });
 
         app = window.location.hash.substring(1) || "contacts";
 
@@ -31,7 +31,7 @@ $(document).ready(
             app = $(this).attr('id');
             if ($("#services:visible").length > 0) closeServices(0);
             window.location.hash = app;
-            $('.devdocs-box-container.active').removeClass('active');
+            $('#devdocs-action').removeClass('active');
             renderApp();
             return false;
         });
@@ -76,19 +76,22 @@ $(document).ready(
             return false;
         });
 
-        // open service drawer button
-        $('.services-box').click(function() {
+        // Open the Services Drawer
+        $('#services-action').click(function()
+        {
           if ($("#services:visible").length > 0)
             closeServices();
           else
             expandServices();
         });
 
-        $('.devdocs-box').click(function() {
-            $("#appFrame")[0].contentWindow.location.replace("/Me/devdocs/");
-            $('.devdocs-box-container').addClass('active');
-            $('.app-link.selected').removeClass('selected');
-            return false;
+        // Display the Developer Documentation
+        $('#devdocs-action').click(function()
+        {
+          $("#appFrame")[0].contentWindow.location.replace("/Me/devdocs/");
+          $("#devdocs-action").addClass("active");
+          $(".app-link.selected").removeClass("selected");
+          return false;
         });
 
         $('#search-results').delegate(searchSelector, 'mouseover', function() {
@@ -142,7 +145,6 @@ $(document).ready(
             } else {
                 if ($('.search')[0].value.length == 0) {
                     $('#search-results').fadeOut();
-                    $('.search').removeClass('populated');
                 } else {
                     search();
                 }
@@ -253,13 +255,10 @@ function processResults(name, results, query) {
 
     if ($('.search-result-row:not(.template)').length > 0) {
       $('#search-results').removeClass("no-results");
-        $('.search').addClass('populated');
         if ($('.highlighted').length === 0) {
             $('#search-results').find('.search-result-row:not(.template)').first().addClass('highlighted');
         }
     } else {
-        // $('#search-results').fadeOut();
-      $('.search').removeClass('populated');
       $('#search-results').addClass("no-results");
     }
 }
@@ -621,7 +620,7 @@ function renderApp(fragment) {
 
 function expandServices()
 {
-  $('.services-box-container').addClass("active");
+  $('#services-action').addClass("active");
 
   // Hide child elements of the services container...
   $('#services #choose-services').hide();
@@ -651,32 +650,25 @@ function resizeFrame() {
     $("#appFrame").width($(window).width());
 }
 
-
-
 function closeServices(duration)
 {
   dur = duration == undefined ? 200 : duration;
-  $('.services-box-container').removeClass("active");
+  $('#services-action').removeClass("active");
 
   // Restore the main content area...
-  $("#iframeWrapper").animate({
-    top: "64px"
-  }, {
-      duration: dur, queue: false
-  });
+  $("#iframeWrapper").animate({ top: "64px" }, { duration: dur, queue: false });
 
   // Restore the viewers slider...
   $("#viewers").animate({ top: "86px" }, { duration: dur });
 
-  $('#services').animate({height: "0px"}, {duration: dur, queue: false, complete:function() {
-      // $('.services-box-container').show();
+  $('#services').animate({ height: "0px" }, { duration: dur, queue: false, complete:function() {
       $('#services').hide();
       resizeFrame();
   }});
 
   $("#doMorePopup:visible").hide();
-
 }
+
 
 
 /*
