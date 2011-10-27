@@ -445,7 +445,7 @@ function drawService(synclet) {
         newService.attr('id', synclet.provider + 'connect');
         $('#service-selector').append(newService);
     }
-    newService.find('.provider-icon').attr('src', 'img/icons/' + synclet.provider + '.png').attr('title', synclet.info);
+    newService.find('.provider-icon').attr('src', 'img/social-icons/32px/' + synclet.provider + '.png').attr('title', synclet.info);
     newService.find('.provider-link').attr('href', synclet.authurl).data('provider', synclet.provider);
     newService.find('.provider-name').text(synclet.provider);
     newService.removeClass('template');
