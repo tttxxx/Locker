@@ -12,6 +12,7 @@ if ( ! window.location.origin) window.location.origin = window.location.protocol
 var externalBase = window.location.origin;
 
 var _gaq = [['_setAccount', 'UA-22812443-1'], ['_trackPageview']];;
+var _kmq = _kmq || [];
 
 $(document).ready(
     function() {
@@ -41,28 +42,18 @@ $(document).ready(
         });
 
         $(".buttonCounter").mouseenter(function() {
+            if ($(this).hasClass('hoveredViews')) return;
             $("div.appMenu").not(".hoveredViews .appMenu").hide();
             $(".buttonCounter").removeClass("hoveredViews");
 
             var that = this;
+            var parent = $(this).parent();
             var E = $(this).next("div.appMenu");
-            E.mouseleave(function() {
+            parent.mouseleave(function() {
                 $(that).removeClass("hoveredViews");
                 E.hide();
                 return false;
             })
-            $(this).mouseleave(function() {
-                var leaveCloser = setTimeout(function() {
-                    $(that).removeClass("hoveredViews");
-                    console.log("Hiding")
-                    E.hide();
-                }, 100);
-                E.mouseenter(function() {
-                    clearTimeout(leaveCloser);
-                    return false;
-                });
-                return false;
-            });
             E.css("left", $(this).position().left + 5 - E.width());
             E.css("top", $(this).parent().offset().top + $(this).parent().height())
             $(this).addClass("hoveredViews");
@@ -88,6 +79,7 @@ $(document).ready(
         // Display the Developer Documentation
         $('#devdocs-action').click(function()
         {
+          app = 'devdocs';
           $("#appFrame")[0].contentWindow.location.replace("/Me/devdocs/");
           $("#devdocs-action").addClass("active");
           $(".app-link.selected").removeClass("selected");
@@ -121,6 +113,7 @@ $(document).ready(
 
         $('.search').keyup(function(e) {
             if (e.keyCode == 13) {
+                if ($('.highlighted').length === 0) return true;
                 $('.highlighted').click();
                 $('#search-results').fadeOut();
                 return false;
@@ -410,7 +403,8 @@ function drawServices() {
             $('.service:not(.template)').remove();
             providers = [];
             var syncletsToRender = [];
-            for (var i in data.uses) {
+            for (var i = data.uses.length - 1; i >= 0; i--) {
+            // for (var i in data.uses) {
                 for (var j = 0; j < synclets.available.length; j++) {
                     if (synclets.available[j].provider === data.uses[i]) {
                         if(synclets.available[j].authurl) {
@@ -482,7 +476,7 @@ function drawViewer(viewer, isSelected, appType) {
                 $.get('/synclets/github/run?id=repos', function(){});
                 showGritter('syncgithub');
                 try {
-                     _gaq.push(['_trackPageview', '/track/syncviewers']);
+                     _kmq.push(['record', 'synced viewers']);
                 } catch(err) {
                     console.error(err);
                 }
@@ -521,11 +515,10 @@ function drawViewers() {
                 drawViewer(viewersToRender[i], data.selected[app] === viewersToRender[i].handle, apps[j]);
                 if (viewersToRender[i].author !== 'Singly') {
                    try {
-                       _gaq.push(['_trackPageview', '/track/installedviewers']);
+                       _kmq.push(['record', 'installed viewer']);
                    } catch(err) {
                        console.error(err);
                    }
-
                 }
             }
         }
@@ -559,6 +552,7 @@ function accountPopup (elem) {
                  twitter: {width: 630, height: 500},
                  tumblr: {width: 630, height: 500},
                  facebook: {width: 980, height: 705},
+                 instagram: {width: 800, height: 500},
                  flickr: {width: 1000, height: 877}
                 };
     if (oauthPopupSizes[elem.data('provider')]) {
@@ -570,6 +564,7 @@ function accountPopup (elem) {
 }
 
 function renderApp(fragment) {
+    clearUnseen(app);
     if (timeout) clearTimeout(timeout);
     $('.selected').removeClass('selected');
     $("#" + app).addClass('selected');
@@ -592,7 +587,7 @@ function renderApp(fragment) {
         (function poll (data) {
             $.getJSON("/Me/" + app + "/state", function(state) {
                 ready = state.count > 0;
-                if (ready) {
+                if (ready || app === 'devdocs') {
                     // log('clearing timeout');
                     var needReload = false;
                     if (!fragment && viewerUrl == $("#appFrame")[0].contentWindow.location.toString()) needReload = true;
