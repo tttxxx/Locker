@@ -11,7 +11,6 @@ var searchSelector = '.search-header-row:not(.template),.search-result-row:not(.
 if ( ! window.location.origin) window.location.origin = window.location.protocol+"//"+window.location.host;
 var externalBase = window.location.origin;
 
-var _gaq = [['_setAccount', 'UA-22812443-1'], ['_trackPageview']];;
 var _kmq = _kmq || [];
 
 $(document).ready(
@@ -475,11 +474,7 @@ function drawViewer(viewer, isSelected, appType) {
                 log("forced background syncing to github");
                 $.get('/synclets/github/run?id=repos', function(){});
                 showGritter('syncgithub');
-                try {
-                     _kmq.push(['record', 'synced viewers']);
-                } catch(err) {
-                    console.error(err);
-                }
+                _kmq.push(['record', 'synced viewers']);
                 return;
             }
             if (viewer.handle === 'devdocs') {
@@ -514,11 +509,7 @@ function drawViewers() {
             for(var i in viewersToRender) {
                 drawViewer(viewersToRender[i], data.selected[app] === viewersToRender[i].handle, apps[j]);
                 if (viewersToRender[i].author !== 'Singly') {
-                   try {
-                       _kmq.push(['record', 'installed viewer']);
-                   } catch(err) {
-                       console.error(err);
-                   }
+                    _kmq.push(['record', 'installed viewer']);
                 }
             }
         }
