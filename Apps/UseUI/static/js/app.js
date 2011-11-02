@@ -47,14 +47,16 @@ $(document).ready(
 
             var that = this;
             var parent = $(this).parent();
+            parent.addClass("hovered");
             var E = $(this).next("div.appMenu");
             parent.mouseleave(function() {
                 $(that).removeClass("hoveredViews");
+                parent.removeClass("hovered");
                 E.hide();
                 return false;
             })
-            E.css("left", $(this).position().left + 5 - E.width());
-            E.css("top", $(this).parent().offset().top + $(this).parent().height())
+            // E.css("left", $(this).position().left + 5 - E.width());
+            // E.css("top", $(this).parent().offset().top + $(this).parent().height())
             $(this).addClass("hoveredViews");
             E.slideDown();
         });
