@@ -554,31 +554,63 @@ nav#application-navigation > ul > li
 
 #choose-services
 {
+  position: absolute;
+  top: 0;
+  left: 48px;
+  bottom: 0;
+
+  width: 160px;
+  height: 96px;
+  padding-left: 20px;
+
   background-image: url('../img/arrow.png');
   background-position: -192px 50%;
   background-repeat: no-repeat;
-  width: 160px;
-  height: 96px;
-  line-height: 96px;
+
   color: white;
-  padding-left: 20px;
   font-weight: bold;
-  float: left;
+  line-height: 96px;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  z-index: 100;
 }
 
 #service-selector
 {
-  float: left;
+  position: absolute;
+  top: 0;
+  left: 48px;
+  right: 48px;
+  bottom: 0;
+
   height: 96px;
+  padding-left: 180px;
+
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  z-index: 99;
 }
 
 .service
 {
-  margin-top: 22px;
+  display: inline-block;
+  position: relative;
+
   width: 96px;
-  float: left;
+  height: 96px;
+
   text-align: center;
+}
+
+.service a
+{
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+
+  padding-top: 12px;
 }
 
 .service.template
@@ -588,15 +620,19 @@ nav#application-navigation > ul > li
 
 .service .checkmark
 {
-  position: relative;
+  position: absolute;
   display: none;
-  top: -65px;
-  left: 20px;
+  top: 14px;
+  right: 18px;
+  height: 24px;
+  width: 24px;
 }
 
 .service .provider-icon
 {
   -webkit-box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
 }
 
 .service .provider-name
@@ -605,7 +641,22 @@ nav#application-navigation > ul > li
   font-size: 11px;
   color: #eee;
   font-weight: bold;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.8);
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+}
+
+.service .provider-link
+{
+  opacity: .8;
+  -webkit-transition: opacity 0.35s;
+  -moz-transition: opacity 0.35s;
+  -ms-transition: opacity 0.35s;
+  -o-transition: opacity 0.35s;
+  transition: opacity 0.35s;
+}
+
+.service .provider-link:hover
+{
+  opacity: 1.0;
 }
 
 .service .provider-link.disabled
