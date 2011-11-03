@@ -185,8 +185,6 @@ $(document).ready(
         });
 
         renderApp();
-
-        resizeFrame();
     }
 );
 
@@ -628,14 +626,7 @@ function expandServices()
   $('#services').animate({ height: "96px" }, { duration: 200, complete: function() {
     $('#services #choose-services').fadeIn();
     $('#services #service-selector').fadeIn();
-    resizeFrame();
   }});
-  $('#appFrame').animate({ height: $(window).height() - 96 - $('.header').height() }, { duration: 200 });
-}
-
-function resizeFrame() {
-    $('#appFrame').height($(window).height() - $('#services').height() - $('.header').height());
-    $("#appFrame").width($(window).width());
 }
 
 function closeServices(duration)
@@ -651,7 +642,6 @@ function closeServices(duration)
 
   $('#services').animate({ height: "0px" }, { duration: dur, queue: false, complete:function() {
       $('#services').hide();
-      resizeFrame();
   }});
 
   $("#doMorePopup:visible").hide();
