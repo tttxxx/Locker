@@ -22,6 +22,7 @@
 
     <header class="header">
       <div class="blur"></div>
+
       <h1>
         <img src="<%= dashboard && dashboard.customLogo ? dashboard.customLogo : "img/logo.png" %>" alt="<%= dashboard && dashboard.customTitle ? dashboard.customTitle : "The Locker Project" %>" />
       </h1>
@@ -49,7 +50,7 @@
                 </div>
               </div>
               <hr />
-              <a class='devdocs-box' href='#'>Create a new view...</a>
+              <a class='devdocs-action' href='#'>Create a new view...</a>
             </div>
           </li>
           <li class="app-link" id="contacts">
@@ -62,7 +63,7 @@
               <hr />
               <div class='contactsViews'></div>
               <hr />
-              <a class='devdocs-box' href='#'>Create a new view...</a>
+              <a class='devdocs-action' href='#'>Create a new view...</a>
             </div>
           </li>
           <li class="app-link" id="links">
@@ -75,7 +76,7 @@
               <hr />
               <div class='linksViews'></div>
               <hr />
-              <a class='devdocs-box' href='#'>Create a new view...</a>
+              <a class='devdocs-action' href='#'>Create a new view...</a>
             </div>
           </li>
           <li class="app-link" id="places">
@@ -94,43 +95,10 @@
         </ul>
       </nav>
 
-      <% if (dashboard && dashboard.customLogout) { %>
-        <div id="customLogout">
-          <div id="menuExpander">
-            <div class="userEmail"></div>
-            <div class="expander">&#x25BC;</div>
-          </div>
-          <div id="userMenu">
-            <ul>
-              <li class="user-name"></li>
-              <% if (dashboard.customSettings) { %>
-                <li class="settings"><a href="<%= dashboard.customSettings %>">Account Settings</a></li>
-              <% } %>
-              <li class="signout-link"><a href="<%= dashboard.customLogout %>">Sign Out</a></li>
-            </ul>
-          </div>
-        </div>
-      <% } %>
-
-      <!-- Global Actions -->
-      <div id="global-actions">
-        <ul>
-
-          <!-- Search (not in use) -->
-          <li id="search-action"><img src="img/header-icons/search.png" width="24" height="24" alt="Search" title="Search" /></li>
-
-          <!-- Developer Docs -->
-          <li id="devdocs-action"><img src="img/header-icons/devdocs.png" width="24" height="24" alt="Developer Docs" title="Developer Docs" /></li>
-
-          <!-- Services -->
-          <li id="services-action"><img src="img/header-icons/services.png" width="24" height="24" alt="Connected Services" title="Connected Services" /></li>
-
-        </ul>
-      </div>
-
       <!-- Global Search Box -->
       <div id="nav-search">
         <input type="search" class="search" placeholder="Search…" />
+        <!--
         <div id="search-results">
           <div class="message">
             <p>No Results Found</p>
@@ -161,7 +129,47 @@
             </div>
           </div>
         </div>
+        -->
       </div>
+
+      <!-- Global Actions -->
+      <div id="global-actions">
+        <ul>
+
+          <!-- Search (not in use) -->
+          <li id="search-action"><img src="img/header-icons/search.png" width="24" height="24" alt="Search" title="Search" /></li>
+
+          <!-- Developer Docs -->
+          <li id="devdocs-action" class="devdocs-action"><img src="img/header-icons/devdocs.png" width="24" height="24" alt="Developer Documentation" title="Developer Documentation" /></li>
+
+          <!-- Services -->
+          <li id="services-action"><img src="img/header-icons/services.png" width="24" height="24" alt="Connected Services" title="Connected Services" /></li>
+
+          <!-- Account -->
+          <li id="account-action"><img src="img/header-icons/account.png" width="24" height="24" alt="My Account" title="My Account" /></li>
+
+        </ul>
+      </div>
+
+      <!--
+      <% if (dashboard && dashboard.customLogout) { %>
+        <div id="customLogout">
+          <div id="menuExpander">
+            <div class="userEmail">justin@mecham.net</div>
+            <div class="expander">&#x25BC;</div>
+          </div>
+          <div id="userMenu">
+            <ul>
+              <li class="user-name">Justin Mecham</li>
+              <% if (dashboard.customSettings) { %>
+                <li class="settings"><a href="<%= dashboard.customSettings %>">Account Settings</a></li>
+              <% } %>
+              <li class="signout-link"><a href="<%= dashboard.customLogout %>">Sign Out</a></li>
+            </ul>
+          </div>
+        </div>
+      <% } %>
+      -->
 
     </header>
 
@@ -209,7 +217,6 @@
 
     <script src="socket.io/socket.io.js"></script>
     <script src="js/client.io.js"></script>
-    <script src="js/tooltip.min.js"></script>
     <% if (dashboard && dashboard.customHostedEndpoint) { %>
       <script src="js/hosted.js"></script>
       <script src="<%= dashboard.customHostedEndpoint %>"></script>

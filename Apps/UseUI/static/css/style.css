@@ -17,15 +17,26 @@ a
 
 body > header
 {
+  display: table-row;
+
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 64px;
+
+  min-width: 700px;
+  height: 65px;
+  line-height: 64px;
+
+  white-space: nowrap;
 
   background-color: white;
 
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -33,12 +44,15 @@ body > header
 
 body > header > h1
 {
+  display: table-cell;
+
   position: relative;
-  float: left;
-  height: 64px;
+  height: 64px !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-body > header > h1:after
+body > header > h1:after /* Vertical Divider */
 {
   content: "";
   position: absolute;
@@ -53,39 +67,53 @@ body > header > h1:after
   background-image: radial-gradient(50% 50%, rgba(0, 0, 0, 0.15), transparent 50%);
 }
 
+body > header > h1 img
+{
+  float: left;
+}
+
 /* Application Links ------------------------------------------------------ */
 
-nav#application-navigation
+body > header > nav#application-navigation
 {
+  display: table-cell;
   position: relative;
-  float: left;
-  height: 64px;
+
+  width: 60%;
+
   font-size: 90%;
   font-weight: bold;
   color: rgba(0, 0, 0, 0.5);
-  margin-left: 20px;
+
+  margin: 0;
+  padding: 0;
 }
 
-nav#application-navigation a
+body > header > nav#application-navigation a
 {
   color: rgba(0, 0, 0, 0.5);
 }
 
-nav#application-navigation > ul
+body > header > nav#application-navigation > ul
 {
-  position: relative;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 64px;
+  height: 64px;
 }
 
-nav#application-navigation > ul:before
+body > header > nav#application-navigation > ul:before
 {
-  float: left;
+  display: inline-block;
+  display: none;
+  position: relative;
   content: "My";
-  line-height: 64px;
   color: rgba(0, 0, 0, 0.25);
 }
 
-nav#application-navigation > ul > li
+body > header > nav#application-navigation > ul > li
 {
+  display: inline-block;
   float: left;
   position: relative;
   margin-left: 14px;
@@ -93,19 +121,19 @@ nav#application-navigation > ul > li
   line-height: 26px;
   padding-left: 6px;
   padding-right: 6px;
-  margin-top: 18px;
   border-radius: 3px;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
   cursor: pointer;
   border: 1px solid transparent;
+  margin-top: 18px;
 }
 
-.app-link:hover
+body > header > nav#application-navigation .app-link:hover
 {
   background-color: rgba(0, 0, 0, 0.025);
 }
 
-.app-link.selected
+body > header > nav#application-navigation .app-link.selected
 {
   background-color: rgb(245, 245, 245);
   color: rgba(0, 0, 0, 0.75);
@@ -124,16 +152,17 @@ nav#application-navigation > ul > li
     inset 0 -1px 0 rgba(255, 255, 255, 0.35);
 }
 
-.app-link.selected a {
+body > header > nav#application-navigation .app-link.selected a
+{
   color: #444;
 }
 
-.app-link .label
+body > header > nav#application-navigation .app-link .label
 {
   float: left;
 }
 
-.app-link .buttonCounter
+body > header > nav#application-navigation .app-link .buttonCounter
 {
   float: right;
   font-weight: bold;
@@ -152,7 +181,7 @@ nav#application-navigation > ul > li
   color: rgb(175, 175, 175);
 }
 
-.app-link.selected .buttonCounter
+body > header > nav#application-navigation .app-link.selected .buttonCounter
 {
   background-color: white;
   border-color: transparent;
@@ -175,16 +204,15 @@ nav#application-navigation > ul > li
 
 #global-actions
 {
+  display: table-cell;
+
   position: relative;
-  float: right;
   height: 64px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
+  width: 200px;
 }
 
 #global-actions ul
 {
-  float: left;
   height: 64px;
   list-style: none;
   margin: 0 13px 0 0;
@@ -274,9 +302,18 @@ nav#application-navigation > ul > li
 
 #nav-search
 {
+  display: table-cell;
+
   position: relative;
-  float: right;
-  margin-right: 20px;
+  width: 40%;
+  max-width: 100px;
+  min-width: 200px;
+  padding: 0;
+  margin: 0;
+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 #nav-search .template
@@ -286,16 +323,13 @@ nav#application-navigation > ul > li
 
 #nav-search input.search
 {
-  position: relative;
-
-  width: 256px;
+  float: left;
   height: 24px;
-  padding-top: 5px;
   font-size: 12px;
-  margin-top: 20px;
-  margin-left: 20px;
   border: 1px solid rgba(0, 0, 0, 0.15);
 
+  margin-bottom: 21px;
+  width: 100%;
   -webkit-appearance: textfield;
 
   -webkit-border-radius: 3px;
@@ -327,7 +361,6 @@ nav#application-navigation > ul > li
 
 #search-results
 {
-  display: none;
   position: absolute;
   top: 14px;
   left: 14px;
@@ -669,11 +702,11 @@ nav#application-navigation > ul > li
 
 #customLogout
 {
-  display: none;
+  /*display: none;*/
   position: relative;
   top: 50%;
 
-  float: right;
+  display: table-cell;
 
   height: 24px;
   line-height: 24px;

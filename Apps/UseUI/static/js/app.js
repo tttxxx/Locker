@@ -78,7 +78,7 @@ $(document).ready(
         });
 
         // Display the Developer Documentation
-        $('#devdocs-action').click(function()
+        $('.devdocs-action').click(function()
         {
           app = 'devdocs';
           $("#appFrame")[0].contentWindow.location.replace("/Me/devdocs/");
