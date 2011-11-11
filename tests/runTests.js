@@ -193,7 +193,7 @@ var runTests = function() {
 }
 
 var runRake = function() {
-    var rakeProcess = require("child_process").spawn("rake", [], { cwd: __dirname + "/integration"});
+    var rakeProcess = require("child_process").spawn("rake", ["ci:setup:rspec","default"], { cwd: __dirname + "/integration"});
     rakeProcess.stdout.on("data", function(data) {
         process.stdout.write(data);
     });
@@ -211,5 +211,4 @@ var finished = function(exitCode, signal) {
         console.dir("vows process exited abnormally (code="+exitCode+", signal="+signal+")");
     }
     lockerd.shutdown(exitCode);
-    process.exit(exitCode);
 }

@@ -175,6 +175,9 @@ function search() {
     $.get(baseURL, {q: q + star, type: 'timeline/twitter*', limit: 3}, function(results) {
         processResults('tweets', resXform(results), q);
     });
+    $.get(baseURL, {q: q + star, type: 'place*', limit: 3}, function(results) {
+        processResults('places', resXform(results), q);
+    });
     $.get('/Me/links/search', {q: q + star, limit: 3}, function(otherData) {
         processResults('links', otherData, q);
     });
@@ -277,6 +280,24 @@ resultModifiers.links = function(newResult, obj) {
     newResult.children('.search-result').html(obj.title);
     newResult.find('.search-result-icon').attr('src', obj.favicon || 'img/link.png').addClass("favicon");
     newResult.click(function() { window.open(obj.link,'_blank'); });
+}
+
+resultModifiers.places = function(newResult, obj) {
+    newResult.children('.search-result').html(obj.fullobject.title);
+    switch (obj.fullobject.network) {
+        case 'foursquare':
+            newResult.find('.search-result-icon').attr('src', '/dashboard/img/icons/foursquare.png');
+            break;
+        case 'twitter':
+            newResult.find('.search-result-icon').attr('src', '/dashboard/img/icons/twitter.png');
+            break;
+        case 'latitude':
+            newResult.find('.search-result-icon').attr('src', '/dashboard/img/icons/gplus.png');
+            break;
+        default:
+            newResult.find('.search-result-icon').attr('src', 'silhouette.png');
+    }
+    newResult.click(function() { app = 'places'; renderApp('view-' + obj._id); });
 }
 
 resultModifiers.tweets = function(newResult, obj) {
@@ -473,8 +494,8 @@ function drawViewers() {
     log('drawViewers');
     $.getJSON('viewers', function(data) {
         $('.viewer:not(.template)').remove();
-        var apps = ["links", "contacts", "photos"];
-        for (var j = 0; j < 3; ++j) {
+        var apps = ["links", "contacts", "photos", "places"];
+        for (var j = 0; j < 4; ++j) {
             var viewersToRender = data.available[apps[j]];
             for(var i in viewersToRender) {
                 drawViewer(viewersToRender[i], data.selected[app] === viewersToRender[i].handle, apps[j]);
@@ -537,6 +558,7 @@ function renderApp(fragment) {
             if (app === 'photos') appId = 'photosv09';
             if (app === 'contacts') appId = 'contactsviewer';
             if (app === 'links') appId = 'linkalatte';
+            if (app === 'places') appId = 'helloplaces';
             data.selected[app] = appId;
         } else {
             if (!data.selected[app]) return;
@@ -665,7 +687,12 @@ var GuidedSetup = (
                     if (t.totalDone >= ($("#services .service").length - 1)) {
                         $("#doMorePopup").remove();
                     } else {
-                        $("#doMorePopup span:visible").hide().next().show();
+                        if ($('#doMorePopup span:visible').length === 0) {
+                            $('#doMorePopup span:visible').hide();
+                            $('#doMorePopup span').first().show();
+                        } else {
+                            $("#doMorePopup span:visible").hide().next().show();
+                        }
                     }
                 }
             }

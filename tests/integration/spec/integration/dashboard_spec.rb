@@ -28,6 +28,7 @@ describe 'dashboard' do
 
   it 'should allow access to api explorer' do
     visit '/'
+    sleep 1
     page.execute_script("$('#devdocs-box').click()")
     within_frame 'appFrame' do
       page.should have_content('Make your own viewer!')
@@ -44,5 +45,47 @@ describe 'dashboard' do
     within_frame 'appFrame' do
       page.should have_content('Make your own viewer!')
     end
+  end
+
+  it 'should show a Gritter notification if a new service is connected' do
+    visit '/'
+    page.execute_script("socket.$events.newservice({provider:'gcontacts', title:'Google Contacts'})")
+    page.execute_script("$(window).trigger('focus')")
+    page.should have_content('Connected Google Contacts')
+  end
+
+  it 'a Gritter notification should show a close button when hovered over' do
+    visit '/'
+    page.execute_script("socket.$events.newservice({provider:'gcontacts', title:'Google Contacts'})")
+    page.execute_script("$(window).trigger('focus')")
+    sleep 0.1
+    page.execute_script("$('.gritter-item').trigger('mouseover')")
+    page.should have_css('.gritter-close')
+  end
+
+  it 'should show a Gritter notification should show a close button when hovering over it' do
+    visit '/'
+    page.execute_script("$(window).trigger('focus');")
+    page.execute_script(<<"BLORF")
+    socket.$events.viewer({
+       type:'view/github',
+       via:'github',
+       timestamp:1320881456139,
+       action:'update',
+       obj:{
+          source:'github_view',
+          data:{
+             id:'smurthas/Skeleton-Viewer',
+             manifest:'smurthas/Skeleton-Viewer/manifest.app',
+             at:'2011/11/09 15:23:33 -0800',
+             viewer:'photos',
+             _id:'4ebb0ce297e5172111034f6b'
+          }
+       }
+    });
+BLORF
+    sleep 0.1
+    page.should have_content('Updated Photos Viewer')
+    page.should have_content('smurthas/Skeleton-Viewer')
   end
 end
